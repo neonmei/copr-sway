@@ -1,15 +1,15 @@
 Name:           sway
-Version:        1.0
-Release:        1%{?dist}
+Version:        1.2
+Release:        2%{?dist}
 Summary:        i3-compatible window manager for Wayland
-Group:          User Interface/X
 License:        MIT
 URL:            https://github.com/swaywm/sway
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires:  asciidoc
+Patch0001: 0001-layer-shell-don-t-give-focus-to-unmapped-layer-surfa.patch
+
+BuildRequires:  cmake
 BuildRequires:  gcc-c++
-BuildRequires:  git
 BuildRequires:  make
 BuildRequires:  meson
 BuildRequires:  pam-devel
@@ -18,40 +18,40 @@ BuildRequires:  pkgconfig(dbus-1)
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(json-c)
 BuildRequires:  pkgconfig(libcap)
+BuildRequires:  pkgconfig(libinput)
 BuildRequires:  pkgconfig(libpcre)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(wayland-client)
 BuildRequires:  pkgconfig(wayland-cursor)
 BuildRequires:  pkgconfig(wayland-egl)
-BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  pkgconfig(wayland-server)
-BuildRequires:  pkgconfig(libevdev)
-# cannot depend like this since pc file is versioned 0.0.1
-#BuildRequires:  pkgconfig(wlroots) >= 0.1
-BuildRequires:  wlroots-devel >= 0.2
+BuildRequires:  pkgconfig(wayland-protocols)
+BuildRequires:  pkgconfig(wlroots) >= 0.7.0
 BuildRequires:  wayland-devel
+BuildRequires:  libevdev-devel
+BuildRequires:  git
 BuildRequires:  scdoc
 # Dmenu is the default launcher in sway
-Requires:       dmenu
-Requires:       libinput >= 1.6.0
+Recommends:     dmenu
+
+Requires:       swaybg
 # By default the Fedora background is used
 Recommends:     f%{fedora}-backgrounds-base
-# dmenu (as well as rxvt and many others) requires XWayland on Sway
+
+# dmenu (as well as rxvt any many others) requires XWayland on Sway
 Requires:       xorg-x11-server-Xwayland
 # Sway binds the terminal shortcut to one specific terminal. In our case urxvtc-ml
 Recommends:     rxvt-unicode-256color-ml
-# grim is a recommended way to take screenshots on sway 1.0+
-Recommends:     grim
-
-Patch0001: 3862.patch
+# TODO: needs packaging
+# grim is the recommended way to take screenshots on sway 1.0+
+# Recommends:     grim
 
 %description
-Sway is a tiling window manager supporting Wayland compositor protocol and 
+Sway is a tiling window manager supporting Wayland compositor protocol and
 i3-compatible configuration.
 
 %prep
-%autosetup -p 1 -n %{name}-%{version}%{?versrc_tail}
-mkdir %{_target_platform}
+%autosetup -p 1
 
 %build
 %meson
@@ -71,30 +71,59 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %config(noreplace) %{_sysconfdir}/sway/config
 %dir %{_sysconfdir}/sway/security.d
 %config(noreplace) %{_sysconfdir}/sway/security.d/00-defaults
-%{_mandir}/man1/sway*.1*
-%{_mandir}/man5/sway*.5*
-%{_mandir}/man7/sway*.7*
-%caps(cap_sys_ptrace,cap_sys_tty_config=eip) %{_bindir}/sway
+%{_mandir}/man1/*
+%{_mandir}/man5/*
+%{_mandir}/man7/*
+%{_bindir}/sway
 %{_bindir}/swaybar
-%{_bindir}/swaybg
 %{_bindir}/swaymsg
 %{_bindir}/swaynag
 %{_datadir}/wayland-sessions/sway.desktop
-%{_datadir}/bash-completion/completions/sway*
-%exclude %{_datadir}/fish/completions/sway*
+%dir %{_datadir}/zsh
+%dir %{_datadir}/zsh/site-functions
 %{_datadir}/zsh/site-functions/_sway*
-%{_datadir}/backgrounds/sway/*.png
+%dir %{_datadir}/bash-completion
+%dir %{_datadir}/bash-completion/completions
+%{_datadir}/bash-completion/completions/sway*
+%dir %{_datadir}/fish
+%dir %{_datadir}/fish/completions
+%{_datadir}/fish/completions/sway*
+%{_datadir}/backgrounds/sway
 
 %changelog
-* Fri Mar 15 2019 kenoh <kenoh@local> - 1.0
-- Final release 1.0
+* Wed Sep 11 2019 Ivan Mironov <mironov.ivan@gmail.com> - 1.2-2
+- Add patch to fix easily reproducible crash
 
-* Tue Dec 04 2018 Jerzy Drozdz <rpmbuilder@jdsieci.pl> - 1.0-beta.2
-- Update to 1.0-beta.2
+* Thu Aug 29 2019 Jeff Peeler <jpeeler@redhat.com> - 1.2-1
+- Update to 1.2
 
-* Tue Nov 06 2018 Jan Pokorný <jpokorny+rpm-sway@fedoraproject.org> - sway-1.0-0.beta.1
-- Update to beta release 1.0-beta.1 together with some imposed
-  adjustmends (wlc -> wlrtoots, swaygrab -> grim externally, and more)
+* Sat Jul 27 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Sun Jun 23 2019 Till Hofmann <thofmann@fedoraproject.org> - 1.1.1-1
+- Update to 1.1.1
+- Add 'Requires: swaybg' (swaybg has been split from sway)
+- Remove upstreamed patch
+
+* Sun Mar 24 2019 Till Hofmann <thofmann@fedoraproject.org> - 1.0-3
+- Replace 'Requires: dmenu' by 'Recommends: dmenu'
+- Re-enable manpages
+- Remove cap_sys_ptrace, cap_sys_tty_config from sway binary
+- Replace 'Requires: libinput' by 'BuildRequires: pkgconfig(libinput)'
+- Replace 'BuildRequires: wlroots-devel' by 'BuildRequires: pkgconfig(wlroots)'
+
+* Thu Mar 21 2019 Till Hofmann <thofmann@fedoraproject.org> - 1.0-2
+- Remove obsolete (and failing) call to %%make_install
+- Fix directories without owner
+
+* Mon Mar 18 2019 Jeff Peeler <jpeeler@redhat.com> - 1.0-1
+- Update to 1.0 (without man pages)
+
+* Thu Feb 07 2019 Björn Esser <besser82@fedoraproject.org> - 0.15.2-3
+- Add patch to disable -Werror, fixes FTBFS
+
+* Sun Feb 03 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.15.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
 * Thu Jul 26 2018 Till Hofmann <thofmann@fedoraproject.org> - 0.15.2-1
 - Update to stable release 0.15.2

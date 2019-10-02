@@ -1,0 +1,11 @@
+diff -ru swayidle-1.2/main.c swayidle-1.2-orig/main.c
+--- swayidle-1.2/main.c	2019-01-27 07:22:09.000000000 -0600
++++ swayidle-1.2-orig/main.c	2019-04-07 16:26:44.160064370 -0500
+@@ -430,6 +430,7 @@
+ 		return 1;
+ 	}
+ 	assert(false); // not reached
++	return -1;
+ }
+ 
+ static int display_event(int fd, uint32_t mask, void *data) {
