@@ -12,7 +12,7 @@
 
 
 Name:           wlroots
-Version:        0.7.0
+Version:        0.8.0
 Release:        1%{?gitrel}%{?dist}
 Summary:        A modular Wayland compositor library
 
