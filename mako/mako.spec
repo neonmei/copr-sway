@@ -1,12 +1,12 @@
-%global commit  v1.1
+%global commit  v1.4
 %global gitdate %{nil}
 %global gitrel  %{nil}
 %global gitver  %{nil}
 
 
 Name:		mako
-Version:	1.1
-Release:	1.1%{?dist}
+Version:	1.4
+Release:	1%{?dist}
 Summary:	A lightweight notification daemon for Wayland.
 
 License:	MIT
@@ -21,6 +21,7 @@ BuildRequires:	wayland-protocols-devel >= 1.14
 BuildRequires:	cairo-devel
 BuildRequires:	pango-devel
 BuildRequires:	scdoc
+BuildRequires:	pkgconfig(gdk-pixbuf-2.0)
 
 %description
 %{summary}
@@ -45,6 +46,7 @@ BuildRequires:	scdoc
 %{_bindir}/makoctl
 %{_mandir}/man1/mako.1.gz
 %{_mandir}/man1/makoctl.1.gz
+%{_datarootdir}/dbus-1/services/fr.emersion.mako.service
 
 
 %changelog
