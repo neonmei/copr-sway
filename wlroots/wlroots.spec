@@ -1,4 +1,4 @@
-%global commit  0.7.0
+%global commit  0.10.0
 %global gitdate %{nil}
 %global gitrel  %{nil}
 %global gitver  %{nil}
@@ -8,11 +8,11 @@
 #global gitver  -#{gitdate}git#{scommit}
 
 
-%global api_ver 3
+%global api_ver 5
 
 
 Name:           wlroots
-Version:        0.8.1
+Version:        %{commit}
 Release:        1%{?gitrel}%{?dist}
 Summary:        A modular Wayland compositor library
 
@@ -34,6 +34,7 @@ Source0:        %{url}/archive/%{commit}.tar.gz#/%{name}-%{version}%{?gitver}.ta
 Source1:        examples.meson.build
 
 BuildRequires:  gcc
+BuildRequires:  gcc-c++
 BuildRequires:  meson >= 0.48.0
 # patch application
 #BuildRequires:  git
@@ -54,6 +55,8 @@ BuildRequires:  pkgconfig(xkbcommon)
 #                                   # transitively: freerdp-devel
 BuildRequires:  pkgconfig(egl)
 #                                   mesa-libEGL-devel
+BuildRequires:  mesa-libEGL-devel
+# ^^^ because in f32 ^^^ lost pkgconfig(egl) provides :(
 BuildRequires:  pkgconfig(glesv2)
 BuildRequires:  pkgconfig(gbm) >= 17.1.0
 #                                   mesa-libgbm-devel >= 17.1.0

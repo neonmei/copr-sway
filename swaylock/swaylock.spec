@@ -1,6 +1,6 @@
 Name:       swaylock
-Version:    1.4
-Release:    2%{?dist}
+Version:    1.5
+Release:    1%{?dist}
 Summary:    Screen locker for Wayland
 
 License:    MIT
@@ -47,8 +47,8 @@ swaylock is a screen locking utility for Wayland compositors.
 %dir %{_datadir}/zsh/site-functions
 %{_datadir}/zsh/site-functions/_%{name}
 %dir %{_datadir}/fish
-%dir %{_datadir}/fish/completions
-%{_datadir}/fish/completions/%{name}.fish
+%dir %{_datadir}/fish/vendor_completions.d
+%{_datadir}/fish/vendor_completions.d/%{name}.fish
 
 
 %changelog

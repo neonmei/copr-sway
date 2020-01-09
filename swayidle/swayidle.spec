@@ -1,13 +1,11 @@
 Name: swayidle
-Version: 1.5
+Version: 1.6
 Release: 2%{?dist}
 Summary: An idle daemon for wayland compositors
 
 License: MIT and LGPLv2+
 URL: https://github.com/swaywm/swayidle
 Source0: %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-
-Patch0: fix-control-reaches-end.patch
 
 BuildRequires: meson >= 0.48.0
 BuildRequires: gcc
@@ -40,9 +38,9 @@ swayidle is an idle management daemon for Wayland compositors.
 %{_datadir}/bash-completion/completions/%{name}
 %dir %{_datadir}/bash-completion
 %dir %{_datadir}/bash-completion/completions
-%{_datadir}/fish/completions/swayidle.fish
+%{_datadir}/fish/vendor_completions.d/%{name}.fish
 %dir %{_datadir}/fish
-%dir %{_datadir}/fish/completions
+%dir %{_datadir}/fish/vendor_completions.d
 %{_datadir}/zsh/site-functions/_%{name}
 %dir %{_datadir}/zsh
 %dir %{_datadir}/zsh/site-functions

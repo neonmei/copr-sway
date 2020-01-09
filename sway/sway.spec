@@ -1,12 +1,12 @@
 Name:           sway
-Version:        1.2
-Release:        2%{?dist}
+Version:        1.4
+Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
-Patch0001: 0001-layer-shell-don-t-give-focus-to-unmapped-layer-surfa.patch
+Patch0001:      0001-fix-compiling-with-no-common.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -27,10 +27,12 @@ BuildRequires:  pkgconfig(wayland-egl)
 BuildRequires:  pkgconfig(wayland-server)
 BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  pkgconfig(wlroots) >= 0.7.0
+BuildRequires:  mesa-libEGL-devel
+# ^^^ because in f32 ^^^ lost pkgconfig(egl) provides :(
 BuildRequires:  wayland-devel
 BuildRequires:  libevdev-devel
 BuildRequires:  git
-BuildRequires:  scdoc
+BuildRequires:  pkgconfig(scdoc)
 # Dmenu is the default launcher in sway
 Recommends:     dmenu
 
@@ -51,7 +53,7 @@ Sway is a tiling window manager supporting Wayland compositor protocol and
 i3-compatible configuration.
 
 %prep
-%autosetup -p 1
+%autosetup -p 1 -n %{name}-%{version}
 
 %build
 %meson
@@ -86,8 +88,8 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %dir %{_datadir}/bash-completion/completions
 %{_datadir}/bash-completion/completions/sway*
 %dir %{_datadir}/fish
-%dir %{_datadir}/fish/completions
-%{_datadir}/fish/completions/sway*
+%dir %{_datadir}/fish/vendor_completions.d
+%{_datadir}/fish/vendor_completions.d/*.fish
 %{_datadir}/backgrounds/sway
 
 %changelog
