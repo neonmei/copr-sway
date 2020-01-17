@@ -1,17 +1,16 @@
-%global commit  v1.4
 %global gitdate %{nil}
 %global gitrel  %{nil}
 %global gitver  %{nil}
 
 
 Name:		mako
-Version:	1.4
+Version:	1.4.1
 Release:	1%{?dist}
 Summary:	A lightweight notification daemon for Wayland.
 
 License:	MIT
 URL:		https://github.com/emersion/mako
-Source0:	%{url}/archive/%{commit}.tar.gz#/%{name}-%{version}%{?gitver}.tar.gz
+Source0:	%{url}/archive/v%{version}.tar.gz#/%{name}-%{version}%{?gitver}.tar.gz
 
 BuildRequires:	gcc
 BuildRequires:	meson
@@ -45,6 +44,7 @@ BuildRequires:	pkgconfig(gdk-pixbuf-2.0)
 %{_bindir}/mako
 %{_bindir}/makoctl
 %{_mandir}/man1/mako.1.gz
+%{_mandir}/man5/mako.5.gz
 %{_mandir}/man1/makoctl.1.gz
 %{_datarootdir}/dbus-1/services/fr.emersion.mako.service
 
