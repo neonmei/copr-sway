@@ -1,4 +1,4 @@
-%global commit  0.10.0
+%global commit  0.10.1
 %global gitdate %{nil}
 %global gitrel  %{nil}
 %global gitver  %{nil}
@@ -33,6 +33,7 @@ Source0:        %{url}/archive/%{commit}.tar.gz#/%{name}-%{version}%{?gitver}.ta
 # - only has targets for examples known to compile well (cf. "examples) global)
 Source1:        examples.meson.build
 
+Patch0001:      fix-for-no-common.patch
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  meson >= 0.48.0
@@ -114,7 +115,7 @@ Development files for %{name}.
 
 
 %prep
-%setup -q -n %{name}-%{commit}
+%autosetup -p1 -n %{name}-%{commit}
 #global __scm git_am
 #__scm_setup_git
 #autopatch -p1
