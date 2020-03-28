@@ -1,6 +1,6 @@
 Name:		scdoc
 Version:	1.10.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	scdoc is a simple man page generator for POSIX systems written in C99.
 
 License:	IDontKnow
@@ -27,6 +27,9 @@ make PREFIX=%{_prefix} %{?_smp_mflags}
 %install
 %make_install PREFIX=%{_prefix}
 
+mkdir -p %{buildroot}%{_datadir}/pkgconfig
+mv %{buildroot}/usr/lib/pkgconfig/%{name}.pc %{buildroot}%{_datadir}/pkgconfig/
+
 
 %check
 make check
@@ -36,6 +39,6 @@ make check
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1.gz
 %{_mandir}/man5/%{name}.5.gz
-/usr/lib/pkgconfig/%{name}.pc
+%{_datadir}/pkgconfig/%{name}.pc
 %license COPYING
 %doc README.md
