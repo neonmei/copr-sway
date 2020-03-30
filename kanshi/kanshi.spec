@@ -1,11 +1,11 @@
 %global ver 1.0.0
-#%global gittag v%{ver}
-%global commit c92aa4af0c964dc22d58f7a1c8b660c3fb868cde
+%global gittag v%{ver}
+%global commit dc9f4c8fc3bfa8ff6739d75eca6410454fe59786
 
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
-%define build_timestamp %(date +"%Y%m%d")
-%define snap	%{?commit:.%{build_timestamp}git%{shortcommit}}
-%define archive_name	%{?commit}%{!?commit:%{?gittag}}
+%global shortcommit          %(c=%{commit}; echo ${c:0:7})
+%define build_timestamp      %(date +"%Y%m%d")
+%define snap                 %{?commit:.%{build_timestamp}git%{shortcommit}}
+%define archive_name         %{?commit}%{!?commit:%{?gittag}}
 
 Name:		kanshi
 Version:	%{ver}
@@ -26,7 +26,7 @@ BuildRequires:	scdoc
 %{summary}
 
 %prep
-%setup -q -n %{name}-%{archive_name}
+%setup -q -n %{name}-%{!?commit:%{ver}}%{?commit}
 
 
 %build
