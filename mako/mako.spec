@@ -1,6 +1,6 @@
 %global ver 1.4.1
 %global gittag v%{ver}
-%global commit 3be892752973c7f57c684b2d4ae06d2bed1d1298
+%global commit eaab1e19777fbd8aa0714532723c87d84c14aa1a
 
 %global shortcommit          %(c=%{commit}; echo ${c:0:7})
 %define build_timestamp      %(date +"%Y%m%d")
