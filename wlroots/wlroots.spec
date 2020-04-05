@@ -1,19 +1,17 @@
-%global commit  0.10.1
-%global gitdate %{nil}
-%global gitrel  %{nil}
-%global gitver  %{nil}
-# Keep the below around for possible snapshot times (was a must prior to 0.1)
-#global scommit #(c=#{commit}; echo ${c:0:7})
-#global gitrel  .#{gitdate}git#{scommit}
-#global gitver  -#{gitdate}git#{scommit}
+%global ver 0.10.1
+%global gittag v%{ver}
+%global commit 1fa9e0203b4192659a36ddd259c174569bc227d5
 
+%global shortcommit          %(c=%{commit}; echo ${c:0:7})
+%define build_timestamp      %(date +"%Y%m%d")
+%define snap                 %{?commit:.%{build_timestamp}git%{shortcommit}}
+%define archive_name         %{?commit}%{!?commit:%{?gittag}}
 
 %global api_ver 5
 
-
 Name:           wlroots
-Version:        %{commit}
-Release:        1%{?gitrel}%{?dist}
+Version:        %{ver}
+Release:        1%{snap}%{?dist}
 Summary:        A modular Wayland compositor library
 
 # Source files/overall project licensed as MIT, but
@@ -27,13 +25,12 @@ Summary:        A modular Wayland compositor library
 
 License:        MIT
 URL:            https://github.com/swaywm/%{name}
-Source0:        %{url}/archive/%{commit}.tar.gz#/%{name}-%{version}%{?gitver}.tar.gz
+Source0:        %{url}/archive/%{archive_name}.tar.gz#/%{name}-%{version}%{?snap}.tar.gz
 # this file is a modification of examples/meson.build so as to:
 # - make it self-contained
 # - only has targets for examples known to compile well (cf. "examples) global)
 Source1:        examples.meson.build
 
-Patch0001:      fix-for-no-common.patch
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  meson >= 0.48.0
@@ -115,7 +112,7 @@ Development files for %{name}.
 
 
 %prep
-%autosetup -p1 -n %{name}-%{commit}
+%autosetup -p 1 -n %{name}-%{!?commit:%{ver}}%{?commit}
 #global __scm git_am
 #__scm_setup_git
 #autopatch -p1

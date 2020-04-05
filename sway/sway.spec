@@ -1,12 +1,20 @@
+%global ver 1.4
+%global gittag v%{ver}
+%global commit 3078f232581d1dcd548810370c193c6d235d2e82
+
+%global shortcommit          %(c=%{commit}; echo ${c:0:7})
+%define build_timestamp      %(date +"%Y%m%d")
+%define snap                 %{?commit:.%{build_timestamp}git%{shortcommit}}
+%define archive_name         %{?commit}%{!?commit:%{?gittag}}
+
 Name:           sway
-Version:        1.4
-Release:        1%{?dist}
+Version:        %{ver}
+Release:        1%{snap}%{?dist}
 Summary:        i3-compatible window manager for Wayland
+
 License:        MIT
 URL:            https://github.com/swaywm/sway
-Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-
-Patch0001:      0001-fix-compiling-with-no-common.patch
+Source0:        %{url}/archive/%{archive_name}.tar.gz#/%{name}-%{version}%{?snap}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -53,7 +61,7 @@ Sway is a tiling window manager supporting Wayland compositor protocol and
 i3-compatible configuration.
 
 %prep
-%autosetup -p 1 -n %{name}-%{version}
+%autosetup -p 1 -n %{name}-%{!?commit:%{ver}}%{?commit}
 
 %build
 %meson
