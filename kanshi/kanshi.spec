@@ -1,6 +1,6 @@
-%global ver 1.0.0
+%global ver 1.1.0
 %global gittag v%{ver}
-%global commit dc9f4c8fc3bfa8ff6739d75eca6410454fe59786
+%global commit 846b725637840fd41aaa252d457392758197e1d8
 
 %global shortcommit          %(c=%{commit}; echo ${c:0:7})
 %define build_timestamp      %(date +"%Y%m%d")
@@ -9,7 +9,7 @@
 
 Name:		kanshi
 Version:	%{ver}
-Release:	2%{snap}%{?dist}
+Release:	1%{snap}%{?dist}
 Summary:	A lightweight dynamic display configuration for Wayland.
 
 License:	MIT
