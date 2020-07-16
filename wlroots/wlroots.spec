@@ -1,4 +1,4 @@
-%global commit  0.10.1
+%global commit  0.11.0
 %global gitdate %{nil}
 %global gitrel  %{nil}
 %global gitver  %{nil}
@@ -8,7 +8,7 @@
 #global gitver  -#{gitdate}git#{scommit}
 
 
-%global api_ver 5
+%global api_ver 6
 
 
 Name:           wlroots
@@ -33,7 +33,6 @@ Source0:        %{url}/archive/%{commit}.tar.gz#/%{name}-%{version}%{?gitver}.ta
 # - only has targets for examples known to compile well (cf. "examples) global)
 Source1:        examples.meson.build
 
-Patch0001:      fix-for-no-common.patch
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  meson >= 0.48.0
