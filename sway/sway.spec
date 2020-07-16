@@ -1,12 +1,10 @@
 Name:           sway
-Version:        1.4
+Version:        1.5
 Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-
-Patch0001:      0001-fix-compiling-with-no-common.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -71,8 +69,6 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %doc README.md
 %dir %{_sysconfdir}/sway
 %config(noreplace) %{_sysconfdir}/sway/config
-%dir %{_sysconfdir}/sway/security.d
-%config(noreplace) %{_sysconfdir}/sway/security.d/00-defaults
 %{_mandir}/man1/*
 %{_mandir}/man5/*
 %{_mandir}/man7/*
